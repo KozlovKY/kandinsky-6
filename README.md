@@ -18,7 +18,7 @@
 <a href="https://kandinskylab.ai/"><img alt="KandinskyLab" src="https://img.shields.io/badge/KandinskyLab-76E0B7?style=for-the-badge"></a>
 <a href="https://arxiv.org/abs/2610.05608"><img alt="Report" src="https://img.shields.io/badge/Report-9C2731?style=for-the-badge"></a>
 <a href="https://huggingface.co/collections/kandinskylab/kandinsky-60-diffusers"><img alt="Diffusers" src="https://img.shields.io/badge/Diffusers-F8D44E?style=for-the-badge"></a>
-<a href="https://registry.comfy.org/ru/nodes/kandinsky6"><img alt="ComfyUI" src="https://img.shields.io/badge/ComfyUI-EBF764?style=for-the-badge"></a> 
+<a href="https://registry.comfy.org/nodes/kandinsky6"><img alt="ComfyUI" src="https://img.shields.io/badge/ComfyUI-EBF764?style=for-the-badge"></a>
 <!-- <a href="https://huggingface.co/spaces/kandinskylab/test-app-dk610"><img alt="HF Demo" src="https://img.shields.io/badge/HF%20Demo-D9622B?style=for-the-badge"></a> -->
 <!-- <a href="#"><img alt="PyPI" src="https://img.shields.io/badge/PyPI-3171B2?style=for-the-badge"></a> -->
 <!-- <a href="#"><img alt="SGLang" src="https://img.shields.io/badge/SGLang-C6602D?style=for-the-badge"></a>
@@ -40,6 +40,11 @@ Full-HD (1920×1080).
 
 - ```2026/10/06```: We have open-sourced `Kandinsky 6.0`
 
+
+## ComfyUI
+
+For ComfyUI, install [kandinsky6](https://registry.comfy.org/nodes/kandinsky6) and [kandinsky6-sr](https://registry.comfy.org/nodes/kandinsky6-sr) through **ComfyUI Manager**, then restart ComfyUI.
+The `comfyui/` directory contains extension source code; no manual copying is needed — see the [setup guide](comfyui/README.md).
 
 ## Quick start
 
