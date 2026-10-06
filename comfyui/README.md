@@ -8,8 +8,7 @@ Both include native **Qwen3.5-9B** prompt beautification and use the separate
 
 Requires ComfyUI **0.38.0+** and Python 3.10+. Model loading and offloading are managed
 by ComfyUI; the Python inference pipeline and Diffusers library are not required.
-No ComfyUI core patches are needed. For older NVIDIA drivers (below r580), see
-[the native Qwen compatibility setup](https://github.com/kandinskylab/kandinsky-6/blob/main/comfyui/docs/comfyui-development.md#native-qwen-with-an-older-nvidia-driver).
+No ComfyUI core patches are needed. For older NVIDIA drivers, see **Compatibility** below.
 
 ## Install
 
@@ -49,8 +48,9 @@ extra model paths, are reused. Nothing is downloaded during extension install
 or startup. Allow enough disk space for large HF weights.
 
 For gated/private models, obtain access and run `hf auth login` on the ComfyUI
-server first. For manual downloads, see
-[model paths and links](https://github.com/kandinskylab/kandinsky-6/blob/main/comfyui/docs/comfyui-development.md#model-downloads).
+server first. Manual download URLs and destination paths are recorded in each
+workflow JSON (`properties.models` and `properties.kandinsky6_required_files`);
+keep companion JSON configs beside their weights.
 
 ## Run
 
@@ -90,5 +90,18 @@ compiles kernels. The models themselves are not compiled.
 
 For standalone video upscaling, use the
 [SR extension and template](https://github.com/kandinskylab/kandinsky-6-sr/tree/main/comfyui).
-Validation, packaging and manual publishing details:
-[developer notes](https://github.com/kandinskylab/kandinsky-6/blob/main/comfyui/docs/comfyui-development.md).
+
+## Compatibility
+
+If native Qwen fails because `comfy-kitchen` requires a newer NVIDIA driver,
+update the driver or use its official Python-only wheel. For ComfyUI **0.38.0**
+with `comfy-kitchen==0.2.36`, this was tested on H100 with driver 570 and Torch 2.10.
+Run with **ComfyUI's Python**, then restart:
+
+```bash
+python -m pip install --force-reinstall --no-deps \
+  https://files.pythonhosted.org/packages/38/23/a6787aac01d7c28ae3cb07579ba839297a35e6fad66baac096916246cc7f/comfy_kitchen-0.2.36-py3-none-any.whl
+```
+
+Inference stays on GPU. For another ComfyUI version, match its own
+`comfy-kitchen` requirement rather than forcing this pin.
