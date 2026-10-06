@@ -1,0 +1,26 @@
+[project]
+name = "kandinsky6"
+description = "Kandinsky 6 text/image-to-video+audio model for ComfyUI"
+version = "1.0.1"
+license = { file = "LICENSE" }
+requires-python = ">=3.10"
+dependencies = [
+    "einops>=0.8.0",
+    "huggingface-hub>=0.36.0",
+    "librosa>=0.10.2",
+    "loguru>=0.7.0",
+    "omegaconf>=2.3.0",
+    "pydantic>=2.11.0",
+    "pyyaml>=6.0.2",
+    "safetensors>=0.8.0",
+]
+
+[project.urls]
+Repository = "https://github.com/kandinskylab/kandinsky-6"
+Documentation = "https://github.com/kandinskylab/kandinsky-6/tree/main/comfyui"
+
+[tool.comfy]
+PublisherId = "kandinskylab"
+DisplayName = "Kandinsky 6"
+Icon = "https://avatars.githubusercontent.com/u/242813463?v=4&s=400"
+requires-comfyui = ">=0.38.0"

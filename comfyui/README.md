@@ -1,0 +1,94 @@
+# Kandinsky 6
+
+Text-to-video+audio and image-to-video+audio with Kandinsky 6 Pro.
+Two ready-to-run workflows default to **Pro distilled PiFlow (10 steps, CFG=1)**,
+with an I2VA reference portrait. Non-distilled Pro and MagCache remain supported.
+Both include native **Qwen3.5-9B** prompt beautification and use the separate
+**Kandinsky6 SR** extension for super resolution.
+
+Requires ComfyUI **0.38.0+** and Python 3.10+. Model loading and offloading are managed
+by ComfyUI; the Python inference pipeline and Diffusers library are not required.
+No ComfyUI core patches are needed. For older NVIDIA drivers (below r580), see
+[the native Qwen compatibility setup](https://github.com/kandinskylab/kandinsky-6/blob/main/comfyui/docs/comfyui-development.md#native-qwen-with-an-older-nvidia-driver).
+
+## Install
+
+Once the Registry versions are available:
+
+1. Open **ComfyUI Manager** and its custom-node list.
+2. Search for `kandinsky6` and `kandinsky6-sr` (publisher `kandinskylab`) and click **Install** for both.
+3. Restart ComfyUI, then follow **Models** and **Run** below.
+
+Alternatively, with [comfy-cli](https://docs.comfy.org/comfy-cli/getting-started)
+and ComfyUI Manager installed:
+
+```bash
+comfy --workspace /path/to/ComfyUI node install kandinsky6 kandinsky6-sr
+```
+
+Replace `/path/to/ComfyUI` with your ComfyUI folder and restart after installation.
+The base generation nodes work without SR, but the bundled workflows need both extensions.
+
+For manual installation, clone `kandinskylab/kandinsky-6` outside `custom_nodes/`,
+copy the contents of `comfyui/` into `ComfyUI/custom_nodes/kandinsky6/`, then run with
+**ComfyUI's Python** and restart:
+
+```bash
+python -m pip install -r ComfyUI/custom_nodes/kandinsky6/requirements.txt
+```
+
+## Models
+
+Open a bundled workflow and click **Download models** in its setup note,
+or choose **Kandinsky 6 → Kandinsky 6 — Download models** from the top menu.
+
+The button downloads Pro distill 5s, Qwen3.5-9B (~19.3 GB), Qwen2.5, CLIP, the video/audio VAEs,
+BigVGAN and VSR, including all required JSON configs. Files are placed in
+ComfyUI's model folders automatically; existing files, including configured
+extra model paths, are reused. Nothing is downloaded during extension install
+or startup. Allow enough disk space for large HF weights.
+
+For gated/private models, obtain access and run `hf auth login` on the ComfyUI
+server first. For manual downloads, see
+[model paths and links](https://github.com/kandinskylab/kandinsky-6/blob/main/comfyui/docs/comfyui-development.md#model-downloads).
+
+## Run
+
+For faster inference, try SageAttention: launch ComfyUI with `--use-sage-attention` instead of `--use-flash-attention` (requires `sageattention` in ComfyUI's Python environment and a supported NVIDIA GPU).
+
+Open **Workflow → Browse Templates → kandinsky6** and choose:
+
+- **Kandinsky 6.0 Text to Video+Audio**
+- **Kandinsky 6.0 Image to Video+Audio**
+
+Select the downloaded models and run the workflow to save an MP4 with audio.
+Edit the video/audio captions in **Beautify Prompt**; it expands them automatically.
+For I2VA it also sees the original **Load Image** reference. The result appears in
+**Preview as Text**. Set `enabled=false` to use your captions directly.
+Put exact spoken lines in the video caption as `<S>Look there!<E>`; describe the
+voice and other sounds in the audio caption. Thinking and MTP are off; no vLLM,
+Transformers model or separate LLM server is needed. Qwen3.5 is managed by ComfyUI
+and is separate from the Qwen2.5 text encoder required by Kandinsky.
+Click **Download models** once before your first generation. Its downloader
+includes the companion JSON configs and audio files.
+Use `weight_dtype=default` in **Load Diffusion Model** for the first run.
+I2VA includes a portrait; replace it in **Load Image** to use your own image.
+
+**Kandinsky 6 Sampler** selects PiFlow automatically for distilled Pro; use
+**10 steps, CFG=1, denoise=1** and audio VAE **scaling=0.417**. Its sampler/scheduler
+selectors apply only to non-distilled models. **MagCache automatically bypasses
+distilled models**, even if its node is connected.
+For [non-distilled Pro](https://huggingface.co/kandinskylab/Kandinsky-6.0-Pro-5s-Diffusers),
+select its transformer and use **50 steps, CFG=5, audio scaling=0.5302**.
+Set MagCache's `steps` to the sampler's step count; it is calibrated for
+**non-distilled Pro only**, not Lite or VSR. Both templates include VSR.
+The default VSR scale is **2.25x**. For **4x**, select `4x` in both the VSR node
+and the latent-upscaler loader; **2x/2.25x** use the loader's `2x` entry.
+VSR's `use_nabla` defaults to **off**, using ComfyUI's selected attention backend
+without NABLA warmup. Enable it to compare sparse NABLA attention; its first run
+compiles kernels. The models themselves are not compiled.
+
+For standalone video upscaling, use the
+[SR extension and template](https://github.com/kandinskylab/kandinsky-6-sr/tree/main/comfyui).
+Validation, packaging and manual publishing details:
+[developer notes](https://github.com/kandinskylab/kandinsky-6/blob/main/comfyui/docs/comfyui-development.md).
