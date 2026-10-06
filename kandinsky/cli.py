@@ -1,7 +1,10 @@
 from __future__ import annotations
 
+import json
 import logging
+import os
 import time
+from datetime import datetime
 from pathlib import Path
 
 import cyclopts
@@ -9,7 +12,7 @@ import torch
 
 from kandinsky.core.types import Kandinsky6PipelineOutput
 from kandinsky.pipeline.sr import load_sr_pipeline
-from kandinsky.runtime.home import export_dir, logs_dir, output_dir
+from kandinsky.runtime.home import export_dir, logs_dir, open_generate_run
 from kandinsky.runtime.offload import OffloadStrategy
 from kandinsky.runtime.profile import NoOpProfile, ProfileHandle
 
@@ -44,7 +47,7 @@ def generate(  # noqa: PLR0913
     offload: str | None = None,
     image: str | None = None,
     audio: bool = True,
-    progress: bool = False,
+    progress: bool = True,
     sr: bool = False,
     warmup: bool = False,
 ):
@@ -60,10 +63,15 @@ def generate(  # noqa: PLR0913
     Prompt rewrite follows YAML ``beautifier.name`` (default ``qwen25``).
     ``--image`` enables I2VA / I2V conditioning (path to reference image).
     ``--no-audio`` generates video only (t2v / i2v). Audio is on by default.
-    ``--progress`` shows a tqdm bar over the denoising steps (and over the SR tiles).
+    ``--progress`` is the default and shows a tqdm bar over the denoising steps
+    (and over the SR tiles). ``--no-progress`` hides it. In a log file each
+    denoising step is one short line.
     ``--sr`` runs the SR stage even when the config keeps ``sr.enabled: false``
     (model paths still come from the config's ``sr:`` section).
-    ``--out`` defaults to ``$KANDINSKY_HOME/output/output.mp4``.
+    Without ``--out``, the clip is written to
+    ``$KANDINSKY_HOME/outputs/generate_<YYYY-MM-DDTHH-MM-SS>/generations/output.mp4``.
+    That folder also holds ``expanded_prompt.txt``, ``launch.json``, ``logs/``,
+    and ``profiles/``. ``--out`` writes the given file instead.
     ``--warmup`` runs the same generation once without saving, then the saved run.
     The profile JSON is the second run. When SR runs, that JSON also records
     ``measurements.sr_time`` for the saved SR pass.
@@ -88,6 +96,16 @@ def generate(  # noqa: PLR0913
             raise ValueError("--offload must be one of: none, module, block")
         offload_strategy = offload  # type: ignore[assignment]
 
+    run = None
+    if out is None:
+        run = open_generate_run()
+        _bind_generate_run(run)
+        destination = run / "generations" / "output.mp4"
+        _write_launch(run, prompt=prompt, config=config, seed=seed, output="generations/output.mp4")
+    else:
+        destination = Path(out)
+        destination.parent.mkdir(parents=True, exist_ok=True)
+
     pipe = get_pipeline(
         config,
         device=device,
@@ -95,9 +113,6 @@ def generate(  # noqa: PLR0913
         cache_mode=cache_mode,
         offload_strategy=offload_strategy,
     )
-
-    destination = Path(out) if out is not None else output_dir() / "output.mp4"
-    destination.parent.mkdir(parents=True, exist_ok=True)
 
     def _generate(target, save_path: Path | None) -> Kandinsky6PipelineOutput:
         return target(
@@ -125,6 +140,8 @@ def generate(  # noqa: PLR0913
         pipe.profile = timed
 
     result = _generate(pipe, destination)
+    if run is not None:
+        _write_run_prompt(run, destination, result.prompts)
 
     kind = "frames + audio" if result.audio is not None else "frames"
     print(f"Saved {result.frames.shape[2]} {kind} → {result.path}")
@@ -145,6 +162,38 @@ def generate(  # noqa: PLR0913
         force=sr,
         warmup=warmup,
     )
+
+
+def _bind_generate_run(run: Path) -> None:
+    """Point this process's logs and profiles at one generate run."""
+    os.environ["KANDINSKY_LOG_DIR"] = str(run / "logs")
+    os.environ["KANDINSKY_PROFILE_DIR"] = str(run / "profiles")
+    configure_logging()
+
+
+def _write_launch(run: Path, **fields: object) -> None:
+    payload = {
+        "name": "generate",
+        "created_at": datetime.now().astimezone().isoformat(timespec="seconds"),
+        **fields,
+    }
+    (run / "launch.json").write_text(json.dumps(payload, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+
+
+def _write_run_prompt(run: Path, video_path: Path, prompts: list[str] | None) -> Path:
+    """Store the expanded caption as ``expanded_prompt.txt`` in the run folder.
+
+    The pipeline writes that caption beside the video. The run folder keeps
+    one copy under the fixed name.
+    """
+    target = run / "expanded_prompt.txt"
+    sidecar = video_path.with_suffix(".txt")
+    if sidecar.is_file() and sidecar.resolve() != target.resolve():
+        sidecar.replace(target)
+        return target
+    text = "\n\n".join(item.rstrip() for item in (prompts or []))
+    target.write_text(f"{text}\n" if text else "", encoding="utf-8")
+    return target
 
 
 def _synchronize(device: str) -> None:

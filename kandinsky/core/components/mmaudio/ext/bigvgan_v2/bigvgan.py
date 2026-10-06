@@ -298,5 +298,4 @@ class BigVGAN(torch.nn.Module):
             remove_parametrizations(self.conv_pre, 'weight')
             remove_parametrizations(self.conv_post, 'weight')
         except ValueError:
-            print("[INFO] Model already removed weight norm. Skipping!")
             pass

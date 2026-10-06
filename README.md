@@ -18,8 +18,8 @@
 <a href="https://kandinskylab.ai/"><img alt="KandinskyLab" src="https://img.shields.io/badge/KandinskyLab-76E0B7?style=for-the-badge"></a>
 <a href="https://arxiv.org/abs/2610.05608"><img alt="Report" src="https://img.shields.io/badge/Report-9C2731?style=for-the-badge"></a>
 <a href="https://huggingface.co/collections/kandinskylab/kandinsky-60-diffusers"><img alt="Diffusers" src="https://img.shields.io/badge/Diffusers-F8D44E?style=for-the-badge"></a>
+<a href="https://huggingface.co/spaces/kandinskylab/Kandinsky-6.0-Pro-distill-5s"><img alt="HF Demo" src="https://img.shields.io/badge/HF%20Demo-D9622B?style=for-the-badge"></a>
 <a href="https://registry.comfy.org/nodes/kandinsky6"><img alt="ComfyUI" src="https://img.shields.io/badge/ComfyUI-EBF764?style=for-the-badge"></a>
-<!-- <a href="https://huggingface.co/spaces/kandinskylab/test-app-dk610"><img alt="HF Demo" src="https://img.shields.io/badge/HF%20Demo-D9622B?style=for-the-badge"></a> -->
 <!-- <a href="#"><img alt="PyPI" src="https://img.shields.io/badge/PyPI-3171B2?style=for-the-badge"></a> -->
 <!-- <a href="#"><img alt="SGLang" src="https://img.shields.io/badge/SGLang-C6602D?style=for-the-badge"></a>
 <a href="#"><img alt="vLLM" src="https://img.shields.io/badge/vLLM-54A0F8?style=for-the-badge"></a>
@@ -38,6 +38,7 @@ Full-HD (1920×1080).
 
 ## Project Updates
 
+- ```2026/10/06```: We added Hugging Face Space for [Kandinsky 6.0 Pro Distill](https://huggingface.co/spaces/kandinskylab/Kandinsky-6.0-Pro-distill-5s)
 - ```2026/10/06```: We have open-sourced `Kandinsky 6.0`
 
 
@@ -50,7 +51,7 @@ The `comfyui/` directory contains extension source code; no manual copying is ne
 
 An NVIDIA GPU and Python 3.13 or 3.14.
 
-The first run downloads [Kandinsky-6.0-Pro-distill-5s](https://huggingface.co/kandinskylab/Kandinsky-6.0-Pro-distill-5s-Diffusers) into `$KANDINSKY_HOME/weights`. When `$KANDINSKY_HOME` is unset, that directory is `~/.cache/kandinsky`. The clip is written to `$KANDINSKY_HOME/output/output.mp4`. The generate command downloads the checkpoint named in the config if it is not already on disk. Other catalog names are `pro`, `pro-pretrain`, `lite`, `lite-distill`, and `lite-pretrain`.
+The first run downloads [Kandinsky-6.0-Pro-distill-5s](https://huggingface.co/kandinskylab/Kandinsky-6.0-Pro-distill-5s-Diffusers) into `$KANDINSKY_HOME/weights`. When `$KANDINSKY_HOME` is unset, that directory is `~/.cache/kandinsky`. The clip is written to `$KANDINSKY_HOME/outputs/generate_<YYYY-MM-DDTHH-MM-SS>/generations/output.mp4`, with the expanded prompt in `expanded_prompt.txt` next to `launch.json`, `logs/`, and `profiles/`. The generate command downloads the checkpoint named in the config if it is not already on disk. Other catalog names are `pro`, `pro-pretrain`, `lite`, `lite-distill`, and `lite-pretrain`.
 
 ### Clone the repository
 

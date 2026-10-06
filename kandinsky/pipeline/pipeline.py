@@ -25,6 +25,7 @@ from ..runtime.cache import CacheDiT, CacheMode
 from ..runtime.offload import NoOpOffload, OffloadHandle, OffloadStrategy
 from ..runtime.profile import NoOpProfile
 from .config import CacheConfig, MagCacheConfig, NaviCacheConfig, PipelineConfig
+from .progress import denoising_progress
 from .reconfigure import reconfigure as _reconfigure
 
 logger = logging.getLogger("kandinsky")
@@ -535,11 +536,7 @@ class Kandinsky6Pipeline:
             audio_len = int(audio_dur)
 
         # --- denoise ---
-        progress_bar = None
-        if show_progress:
-            from tqdm.auto import tqdm  # noqa: PLC0415
-
-            progress_bar = tqdm(total=num_steps, desc="Denoising")
+        progress_bar = denoising_progress(num_steps) if show_progress else None
 
         try:
             with self.offload.use("dit", prefetch=decode_names):
