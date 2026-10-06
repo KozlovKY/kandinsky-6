@@ -42,11 +42,6 @@ Full-HD (1920×1080).
 - ```2026/10/06```: We have open-sourced `Kandinsky 6.0`
 
 
-## ComfyUI
-
-For ComfyUI, install [kandinsky6](https://registry.comfy.org/nodes/kandinsky6) and [kandinsky6-sr](https://registry.comfy.org/nodes/kandinsky6-sr) through **ComfyUI Manager**, then restart ComfyUI.
-The `comfyui/` directory contains extension source code; no manual copying is needed — see the [setup guide](comfyui/README.md).
-
 ## Quick start
 
 An NVIDIA GPU and Python 3.13 or 3.14.
@@ -84,6 +79,11 @@ just generate "a cat on a mat" --config kandinsky/configs/devices/rtx-5090.yaml 
 ```
 
 Presets live in `kandinsky/configs/devices/`.
+
+## ComfyUI
+
+For ComfyUI, install [kandinsky6](https://registry.comfy.org/nodes/kandinsky6) and [kandinsky6-sr](https://registry.comfy.org/nodes/kandinsky6-sr) through **ComfyUI Manager**, then restart ComfyUI.
+The `comfyui/` directory contains extension source code; no manual copying is needed — see the [setup guide](comfyui/README.md).
 
 ## Performance
 
