@@ -19,7 +19,7 @@
 <a href="https://arxiv.org/abs/2610.05608"><img alt="Report" src="https://img.shields.io/badge/Report-9C2731?style=for-the-badge"></a>
 <a href="https://huggingface.co/collections/kandinskylab/kandinsky-60-diffusers"><img alt="Diffusers" src="https://img.shields.io/badge/Diffusers-F8D44E?style=for-the-badge"></a>
 <a href="https://huggingface.co/spaces/kandinskylab/Kandinsky-6.0-Pro-distill-5s"><img alt="HF Demo" src="https://img.shields.io/badge/HF%20Demo-D9622B?style=for-the-badge"></a>
-<a href="https://registry.comfy.org/ru/nodes/kandinsky6"><img alt="ComfyUI" src="https://img.shields.io/badge/ComfyUI-EBF764?style=for-the-badge"></a> 
+<a href="https://registry.comfy.org/nodes/kandinsky6"><img alt="ComfyUI" src="https://img.shields.io/badge/ComfyUI-EBF764?style=for-the-badge"></a>
 <!-- <a href="#"><img alt="PyPI" src="https://img.shields.io/badge/PyPI-3171B2?style=for-the-badge"></a> -->
 <!-- <a href="#"><img alt="SGLang" src="https://img.shields.io/badge/SGLang-C6602D?style=for-the-badge"></a>
 <a href="#"><img alt="vLLM" src="https://img.shields.io/badge/vLLM-54A0F8?style=for-the-badge"></a>
@@ -79,6 +79,11 @@ just generate "a cat on a mat" --config kandinsky/configs/devices/rtx-5090.yaml 
 ```
 
 Presets live in `kandinsky/configs/devices/`.
+
+## ComfyUI
+
+For ComfyUI, install [kandinsky6](https://registry.comfy.org/nodes/kandinsky6) and [kandinsky6-sr](https://registry.comfy.org/nodes/kandinsky6-sr) through **ComfyUI Manager**, then restart ComfyUI.
+The `comfyui/` directory contains extension source code; no manual copying is needed — see the [setup guide](comfyui/README.md).
 
 ## Performance
 
