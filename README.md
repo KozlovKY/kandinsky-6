@@ -20,9 +20,9 @@
 <a href="https://huggingface.co/collections/kandinskylab/kandinsky-60-diffusers"><img alt="Diffusers" src="https://img.shields.io/badge/Diffusers-F8D44E?style=for-the-badge"></a>
 <a href="https://huggingface.co/spaces/kandinskylab/Kandinsky-6.0-Pro-distill-5s"><img alt="HF Demo" src="https://img.shields.io/badge/HF%20Demo-D9622B?style=for-the-badge"></a>
 <a href="https://registry.comfy.org/nodes/kandinsky6"><img alt="ComfyUI" src="https://img.shields.io/badge/ComfyUI-EBF764?style=for-the-badge"></a>
+<a href="https://docs.vllm.ai/projects/vllm-omni/en/latest/api/vllm_omni/diffusion/models/kandinsky6/"><img alt="vLL-Omni" src="https://img.shields.io/badge/vLLM Omni-54A0F8?style=for-the-badge"></a>
 <!-- <a href="#"><img alt="PyPI" src="https://img.shields.io/badge/PyPI-3171B2?style=for-the-badge"></a> -->
 <!-- <a href="#"><img alt="SGLang" src="https://img.shields.io/badge/SGLang-C6602D?style=for-the-badge"></a>
-<a href="#"><img alt="vLLM" src="https://img.shields.io/badge/vLLM-54A0F8?style=for-the-badge"></a>
 <a href="#"><img alt="FastVideo" src="https://img.shields.io/badge/FastVideo-436BF6?style=for-the-badge"></a> -->
 
 
@@ -38,6 +38,7 @@ Full-HD (1920×1080).
 
 ## Project Updates
 
+- ```2026/10/06```: We added [vLLM-omni](https://docs.vllm.ai/projects/vllm-omni/en/latest/api/vllm_omni/diffusion/models/kandinsky6/) support
 - ```2026/10/06```: We added Hugging Face Space for [Kandinsky 6.0 Pro Distill](https://huggingface.co/spaces/kandinskylab/Kandinsky-6.0-Pro-distill-5s)
 - ```2026/10/06```: We have open-sourced `Kandinsky 6.0`
 
@@ -87,7 +88,7 @@ The `comfyui/` directory contains extension source code; no manual copying is ne
 
 ## Performance
 
-Working time for a 5-second clip on the non-distilled model, after warmup. Weight loading and MP4 encoding are excluded. 
+Working time (s) for a 5-second clip on the non-distilled model, after warmup. Weight loading and MP4 encoding are excluded. 
 
 RTX PRO 6000 (96 GB), A100 80 GB, and H100 80 GB use module offload. The consumer cards use block offload.
 
