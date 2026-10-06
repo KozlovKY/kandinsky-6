@@ -45,7 +45,7 @@ Full-HD (1920×1080).
 
 An NVIDIA GPU and Python 3.13 or 3.14.
 
-The first run downloads [Kandinsky-6.0-Pro-distill-5s](https://huggingface.co/kandinskylab/Kandinsky-6.0-Pro-distill-5s-Diffusers) into `$KANDINSKY_HOME/weights`. When `$KANDINSKY_HOME` is unset, that directory is `~/.cache/kandinsky`. The clip is written to `$KANDINSKY_HOME/output/output.mp4`. The generate command downloads the checkpoint named in the config if it is not already on disk. Other catalog names are `pro`, `pro-pretrain`, `lite`, `lite-distill`, and `lite-pretrain`.
+The first run downloads [Kandinsky-6.0-Pro-distill-5s](https://huggingface.co/kandinskylab/Kandinsky-6.0-Pro-distill-5s-Diffusers) into `$KANDINSKY_HOME/weights`. When `$KANDINSKY_HOME` is unset, that directory is `~/.cache/kandinsky`. The clip is written to `$KANDINSKY_HOME/outputs/generate_<YYYY-MM-DDTHH-MM-SS>/generations/output.mp4`, with the expanded prompt in `expanded_prompt.txt` next to `launch.json`, `logs/`, and `profiles/`. The generate command downloads the checkpoint named in the config if it is not already on disk. Other catalog names are `pro`, `pro-pretrain`, `lite`, `lite-distill`, and `lite-pretrain`.
 
 ### Clone the repository
 
